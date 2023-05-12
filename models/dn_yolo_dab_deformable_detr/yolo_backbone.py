@@ -83,7 +83,7 @@ class Transition_Block(nn.Module):
 # 'l' transition_channels = 32 block_channels=32 n = 4
 # 'x' transition_channels = 40 block_channels=32 n = 6
 class YoLo_Backbone(nn.Module):
-    def __init__(self, transition_channels = 40, block_channels = 32, n = 6, phi = 'x', pretrained=False):
+    def __init__(self, transition_channels = 32, block_channels = 32, n = 4, phi = 'l', pretrained=False):
         super().__init__()
         #-----------------------------------------------#
         #   输入图片是640, 640, 3

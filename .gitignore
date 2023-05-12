@@ -1,2 +1,8 @@
-build
 __pycache__
+build
+*.egg
+*.egg-info
+data
+exps
+yolov7_backbone_weights.pth
+model_data

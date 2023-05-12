@@ -2,7 +2,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from models.yolo_backbone import YoLo_Backbone, Multi_Concat_Block, Conv, SiLU, Transition_Block, autopad
+from models.dn_yolo_dab_deformable_detr.yolo_backbone import YoLo_Backbone, Multi_Concat_Block, Conv, SiLU, Transition_Block, autopad
 
 
 class SPPCSPC(nn.Module):

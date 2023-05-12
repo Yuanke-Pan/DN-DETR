@@ -126,9 +126,9 @@ class DABDeformableDETR(nn.Module):
         self.class_embed.bias.data = torch.ones(num_classes) * bias_value
         nn.init.constant_(self.bbox_embed.layers[-1].weight.data, 0)
         nn.init.constant_(self.bbox_embed.layers[-1].bias.data, 0)
-        for proj in self.input_proj:
-            nn.init.xavier_uniform_(proj[0].weight, gain=1)
-            nn.init.constant_(proj[0].bias, 0)
+#        for proj in self.input_proj:
+#            nn.init.xavier_uniform_(proj[0].weight, gain=1)
+#            nn.init.constant_(proj[0].bias, 0)
 
         # if two-stage, the last class_embed and bbox_embed is for region proposal generation
         num_pred = (transformer.decoder.num_layers + 1) if two_stage else transformer.decoder.num_layers
@@ -177,7 +177,7 @@ class DABDeformableDETR(nn.Module):
             assert mask is not None
         # import ipdb; ipdb.set_trace()
 
-        srcs = [t.tensors for t in reversed(self.feature_summary([feat.tensors for feat in features]))]
+        srcs = [t for t in reversed(self.feature_summary([feat.tensors for feat in features]))]
 
         #if self.num_feature_levels > len(srcs):
         #    _len_srcs = len(srcs)
@@ -517,7 +517,7 @@ class MLP(nn.Module):
         return x
 
 
-def build_dab_deformable_detr(args):
+def build_dab_yolo_deformable_detr(args):
     num_classes = 20 if args.dataset_file != 'coco' else 91
     if args.dataset_file == "coco_panoptic":
         num_classes = 250

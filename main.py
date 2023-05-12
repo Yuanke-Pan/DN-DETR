@@ -25,6 +25,7 @@ from datasets import build_dataset, get_coco_api_from_dataset
 from engine import evaluate, train_one_epoch
 from models import build_DABDETR, build_dab_deformable_detr, build_dab_deformable_detr_deformable_encoder_only
 from models import build_dab_dino_deformable_detr
+from models import build_dab_yolo_deformable_detr
 from util.utils import clean_state_dict
 
 
@@ -65,7 +66,7 @@ def get_args_parser():
 
     # Model parameters
     parser.add_argument('--modelname', '-m', type=str, required=True, choices=['dn_dab_detr', 'dn_dab_deformable_detr',
-                                                                    'dn_dab_deformable_detr_deformable_encoder_only', 'dn_dab_dino_deformable_detr'])
+                                                                    'dn_dab_deformable_detr_deformable_encoder_only', 'dn_dab_dino_deformable_detr', 'dn_dab_yolo_deformable_detr'])
     parser.add_argument('--frozen_weights', type=str, default=None,
                         help="Path to the pretrained model. If set, only the mask head will be trained")
 
@@ -117,7 +118,7 @@ def get_args_parser():
     # for DAB-Deformable-DETR
     parser.add_argument('--two_stage', default=False, action='store_true', 
                         help="Using two stage variant for DAB-Deofrmable-DETR")
-    parser.add_argument('--num_feature_levels', default=4, type=int, 
+    parser.add_argument('--num_feature_levels', default=3, type=int, 
                         help='number of feature levels')
     parser.add_argument('--dec_n_points', default=4, type=int, 
                         help="number of deformable attention sampling points in decoder layers")
@@ -208,6 +209,8 @@ def build_model_main(args):
         model, criterion, postprocessors = build_dab_deformable_detr_deformable_encoder_only(args)
     elif args.modelname.lower() == 'dn_dab_dino_deformable_detr':
         model, criterion, postprocessors = build_dab_dino_deformable_detr(args)
+    elif args.modelname.lower() == 'dn_dab_yolo_deformable_detr':
+        model, criterion, postprocessors = build_dab_yolo_deformable_detr(args)
     else:
         raise NotImplementedError
 

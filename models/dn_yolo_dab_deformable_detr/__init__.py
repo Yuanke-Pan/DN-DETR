@@ -11,7 +11,7 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
 # ------------------------------------------------------------------------
 
-from .dab_deformable_detr import build_dab_deformable_detr
+from .dab_yolo_deformable_detr import build_dab_yolo_deformable_detr
 
 
 
