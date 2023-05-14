@@ -6,3 +6,4 @@ data
 exps
 yolov7_backbone_weights.pth
 model_data
+logs
