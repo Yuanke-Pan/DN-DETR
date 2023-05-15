@@ -148,6 +148,24 @@ class DABDeformableDETR(nn.Module):
             self.transformer.decoder.class_embed = self.class_embed
             for box_embed in self.bbox_embed:
                 nn.init.constant_(box_embed.layers[-1].bias.data[2:], 0.0)
+        z = self.feature_summary.state_dict()
+        for i, p in enumerate(list(z)):
+            print(i, p)
+
+        self.fix_yolo_weight("./model_data/yolov7_weights.pth")
+    
+    def fix_yolo_weight(self, weight_path):
+        w = torch.load(weight_path, map_location='cpu')
+        z = {k.replace("backbone.", "0.body.", 1) : v for k, v in w.items() if k.startswith("backbone")}
+        self.backbone.load_state_dict(z)
+        t = {k.replace("0.body.", "") : v for k, v in w.items() if not k.startswith("backbone") and not "yolo_head_P" in k}
+        self.feature_summary.load_state_dict(t, strict=False)
+        self.feature_summary.fuse()
+        for p in self.backbone.parameters():
+            p.requires_grad = False
+        for i, p in enumerate(self.feature_summary.parameters()):
+            if i < 306:
+                p.requires_grad = False
 
     def forward(self, samples: NestedTensor, dn_args=None):
         """ The forward expects a NestedTensor, which consists of:
